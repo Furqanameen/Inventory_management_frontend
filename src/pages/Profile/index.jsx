@@ -12,15 +12,18 @@ import {
   Title,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import LocationSelect from '../../components/Common/LocationSelect';
 import StoreSelect from '../../components/Common/StoreSelect';
 import { Container } from '../../components/Container/Container';
 import { useAuth } from '../../context/Auth/AuthProvider';
+import { useGlobal } from '../../context/GlobalContext/provider';
 import classes from '../../../src/components/Home/HomePage.module.css';
 
 const ProfilePage = () => {
   const [error] = useState(null);
 
   const { selectedProfile, fetchLoading } = useAuth();
+  const { locationsOptions, storesOptions } = useGlobal();
 
   const form = useForm({
     mode: 'uncontrolled',
@@ -30,6 +33,7 @@ const ProfilePage = () => {
       role: '',
       status: '',
       storeId: '',
+      locationId: '',
     },
   });
 
@@ -41,9 +45,10 @@ const ProfilePage = () => {
         role: selectedProfile?.role,
         status: selectedProfile?.deleted ? 'inactive' : 'active',
         storeId: selectedProfile?.store?._id,
+        locationId: selectedProfile?.store?.location?._id,
       });
     }
-  }, [selectedProfile]);
+  }, [selectedProfile, locationsOptions, storesOptions]);
 
   return (
     <Container py="xl" className={classes.container} size="xl">
@@ -157,6 +162,10 @@ const ProfilePage = () => {
 
               <Grid.Col span={{ base: 12, md: 6 }}>
                 <StoreSelect form={form} error={error} disabledField={true} />
+              </Grid.Col>
+
+              <Grid.Col span={{ base: 12, md: 6 }}>
+                <LocationSelect form={form} error={error} disabledField={true} />
               </Grid.Col>
             </Grid>
           </Card>
