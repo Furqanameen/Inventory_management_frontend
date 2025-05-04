@@ -1,0 +1,79 @@
+.header {
+  padding: 20px 0px;
+  /* background-color: #1B3C74; */
+}
+
+.mainSection {
+  /* padding-bottom: var(--mantine-spacing-sm); */
+}
+
+.link {
+  display: block;
+  padding: 12px 15px;
+  border-radius: 20px;
+  text-decoration: none;
+  color: #fff;
+  font-size: var(--mantine-font-size-sm);
+  font-weight: 300;
+  font-family: Lexend, sans-serif;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.link:hover {
+  background-color: #ffffff33;
+  color: white;
+}
+
+.link.active {
+  background-color: #ffffff33;
+  color: white;
+}
+
+.user {
+  color: #fff !important;
+  /* color: var(--mantine-color-white); */
+  /* color: var(--mantine-color-black); */
+  padding: var(--mantine-spacing-xs) var(--mantine-spacing-xs);
+  border-radius: var(--mantine-radius-sm);
+  transition: background-color 100ms ease;
+}
+
+.user:hover {
+  /* color: #000 !important; */
+  /* background-color: var(--mantine-color-white); */
+}
+
+.user:hover p {
+  /* color: #000 !important; */
+}
+
+.userActive {
+  background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-8));
+}
+
+.tabsList {
+  &::before {
+    display: none;
+  }
+}
+
+.userNameOption {
+  color: #fff !important;
+}
+
+.drawerOpen .link {
+  color: #000 !important;
+}
+
+.drawerLink {
+  display: block;
+  padding: 10px 15px;
+  text-decoration: none;
+  color: var(--mantine-color-text);
+  font-size: var(--mantine-font-size-md);
+  border-radius: var(--mantine-radius-sm);
+
+  &:hover {
+    background-color: var(--mantine-color-gray-1);
+  }
+}

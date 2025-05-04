@@ -1,0 +1,46 @@
+html {
+  height: 100%;
+}
+
+body,
+#root {
+  min-height: 100vh;
+}
+
+.grecaptcha-badge {
+  visibility: hidden;
+}
+
+.mantine-Dropzone-inner {
+  height: 100%;
+  .mantine-Group-root {
+    height: 100%;
+  }
+}
+
+.leaflet-control-attribution {
+  display: none;
+}
+
+:where([data-mantine-color-scheme='light']) .m_fea6bf1a {
+  --burger-color: var(--mantine-color-white);
+}
+
+:root {
+  --app-shell-navbar-width: calc(15.625rem * var(--mantine-scale)) !important;
+  --app-shell-navbar-offset: calc(15.625rem * var(--mantine-scale)) !important;
+  --app-shell-header-height: calc(0rem * var(--mantine-scale));
+  --app-shell-header-offset: calc(0rem * var(--mantine-scale));
+  --app-shell-padding: var(--mantine-spacing-md);
+}
+
+.navbar {
+  width: var(--app-shell-navbar-width);
+  transition: transform 0.3s ease;
+}
+
+@media (min-width: 48em) {
+  .navbar {
+    transform: translateX(calc(var(--app-shell-navbar-width) * -1));
+  }
+}
