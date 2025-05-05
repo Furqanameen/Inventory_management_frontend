@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
 import api from '../../utils/api';
-import { AuthContext } from '../Auth/AuthContext';
 import { useAuth } from '../Auth/AuthProvider';
 import { GlobalContext } from './context';
 
@@ -8,11 +7,17 @@ import { GlobalContext } from './context';
 export const GlobalProvider = ({ children }) => {
   const [allLocations, setAllLocations] = useState([]);
   const [allStores, setAllStores] = useState([]);
-  const { selectedProfile } = useContext(AuthContext);
 
-  const { user } = useAuth();
+  const { user, selectedProfile, permissions } = useAuth();
 
   const fetchLocations = async () => {
+    if (!permissions.locations) {
+      console.warn('User does not have permission to fetch locations');
+      setAllLocations([selectedProfile?.store?.location]);
+      setAllStores([selectedProfile?.store]);
+      return;
+    }
+
     try {
       const response = await api('/api/v1/locations?page=1&perPage=10000');
       setAllLocations(response.data.data.locations.records);
@@ -22,6 +27,10 @@ export const GlobalProvider = ({ children }) => {
   };
 
   const fetchStores = async () => {
+    if (!permissions.stores) {
+      console.warn('User does not have permission to fetch stores');
+      return;
+    }
     try {
       const response = await api('/api/v1/stores?page=1&perPage=10000');
       setAllStores(response.data.data.stores.records);
@@ -42,7 +51,7 @@ export const GlobalProvider = ({ children }) => {
 
       return () => clearInterval(interval); // Cleanup on unmount
     }
-  }, [selectedProfile, user]);
+  }, [permissions, selectedProfile?._id, user]);
 
   const locationsOptions = allLocations.map((location) => ({
     value: location._id,

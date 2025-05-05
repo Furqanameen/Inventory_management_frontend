@@ -24,7 +24,7 @@ export const UserProvider = ({ children }) => {
   const [debouncedValue] = useDebouncedValue(searchQuery, DEFAULT_DELAY);
 
   // const { fetchLocations } = useGlobal();
-  const { selectedProfile } = useContext(AuthContext);
+  const { selectedProfile, permissions } = useContext(AuthContext);
 
   // Fetch records on component mount
   useEffect(() => {
@@ -51,6 +51,11 @@ export const UserProvider = ({ children }) => {
 
   // Fetch records from the API
   const fetchRecords = async () => {
+    if (!permissions.users) {
+      console.warn('User does not have permission to fetch users');
+      return;
+    }
+
     setFetchLoading(true);
     let apiUrl = `${url}?page=${page}&perPage=${perPage}`;
 
@@ -77,9 +82,11 @@ export const UserProvider = ({ children }) => {
 
   // Add a new record
   const addRecord = async (body) => {
+    if (!permissions.users) {
+      console.warn('User does not have permission to add users');
+      return;
+    }
     setLoading(true);
-
-    console.log('body', body)
 
     try {
       const res = await api(`${url}`, {
@@ -107,6 +114,10 @@ export const UserProvider = ({ children }) => {
 
   // Update an record
   const updateRecord = async (updatedOrg) => {
+    if (!permissions.users) {
+      console.warn('User does not have permission to update users');
+      return;
+    }
     setLoading(true);
     try {
       const response = await api(`${url}/${updatedOrg._id}`, {
@@ -132,6 +143,10 @@ export const UserProvider = ({ children }) => {
 
   // Delete an record
   const deleteRecord = async (_id) => {
+    if (!permissions.users) {
+      console.warn('User does not have permission to delete users');
+      return;
+    }
     setLoading(true);
     try {
       const response = await api(`${url}/${_id}`, {
@@ -156,6 +171,10 @@ export const UserProvider = ({ children }) => {
   };
 
   const getRecordById = async (_id) => {
+    if (!permissions.users) {
+      console.warn('User does not have permission to fetch users');
+      return;
+    }
     try {
       const response = await api(`${url}/${_id}`);
       return response.data.data.profile;

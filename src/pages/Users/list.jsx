@@ -11,14 +11,16 @@ import {
   TextInput,
   Title,
 } from '@mantine/core';
+import Unauthorized from '../../components/Common/Unauthorized';
 import { Container } from '../../components/Container/Container';
-// import { AuthContext } from '../../context/Auth/AuthContext';
+import { useAuth } from '../../context/Auth/AuthProvider';
 import { useUser } from '../../context/User/provider';
 import TableComponent from './table';
 import classes from '../../../src/components/Home/HomePage.module.css';
 
 const TableList = () => {
   const { setSearchQuery, loading, page, setPage, perPage, total, fetchLoading } = useUser();
+  const { permissions } = useAuth();
   const navigate = useNavigate();
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
@@ -27,6 +29,10 @@ const TableList = () => {
   const handleRedirect = () => {
     return navigate(`/user/add`);
   };
+
+  if (!permissions.users) {
+    return <Unauthorized />;
+  }
 
   return (
     <Container py="xl" className={classes.container} size="xl">

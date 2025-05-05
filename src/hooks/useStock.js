@@ -21,7 +21,7 @@ export const useStock = () => {
   const [debouncedValue] = useDebouncedValue(searchQuery, DEFAULT_DELAY);
   const { id } = useParams();
 
-  const { selectedProfile } = useContext(AuthContext);
+  const { selectedProfile, permissions } = useContext(AuthContext);
 
   // Fetch records on component mount
   useEffect(() => {
@@ -39,6 +39,10 @@ export const useStock = () => {
 
   // Fetch records from the API
   const fetchRecords = async () => {
+    if (!permissions.stocks) {
+      console.warn('User does not have permission to fetch stocks');
+      return;
+    }
     setFetchLoading(true);
     let apiUrl = `${url}/${id}?page=${page}&perPage=${perPage}`;
 
@@ -66,6 +70,10 @@ export const useStock = () => {
 
   // Add a new record
   const addRecord = async (body) => {
+    if (!permissions.stocks) {
+      console.warn('User does not have permission to add stocks');
+      return;
+    }
     setLoading(true);
 
     try {
@@ -94,6 +102,10 @@ export const useStock = () => {
   };
 
   const getRecordById = async (_id) => {
+    if (!permissions.stocks) {
+      console.warn('User does not have permission to fetch stock by ID');
+      return;
+    }
     try {
       const response = await api(`${url}/${_id}`);
       return response.data.data.stock;

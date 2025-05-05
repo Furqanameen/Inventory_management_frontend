@@ -13,13 +13,16 @@ import {
   Title,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import Unauthorized from '../../components/Common/Unauthorized';
 import { Container } from '../../components/Container/Container';
+import { useAuth } from '../../context/Auth/AuthProvider';
 import { useProduct } from '../../context/Product/provider';
 
 const Form = () => {
   const [error, setError] = useState(null);
 
   const { addRecord, updateRecord, loading, getRecordById } = useProduct();
+  const { permissions } = useAuth();
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -35,6 +38,10 @@ const Form = () => {
   });
 
   const fetchProducts = async () => {
+    if (!permissions.products) {
+      console.warn('User does not have permission to fetch products');
+      return;
+    }
     const res = await getRecordById(id);
 
     if (res) {
@@ -99,6 +106,10 @@ const Form = () => {
   //     return updated;
   //   });
   // };
+
+  if (!permissions.products) {
+    return <Unauthorized />;
+  }
 
   return (
     <Container size="xl">

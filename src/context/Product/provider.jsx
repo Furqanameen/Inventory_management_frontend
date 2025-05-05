@@ -21,13 +21,11 @@ export const ProductProvider = ({ children }) => {
   const [sortBy, setSortBy] = useState(null);
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
   const [debouncedValue] = useDebouncedValue(searchQuery, DEFAULT_DELAY);
-  const { selectedProfile } = useContext(AuthContext);
+  const { selectedProfile, permissions } = useContext(AuthContext);
 
   // Fetch records on component mount
   useEffect(() => {
-    if (selectedProfile) {
-      fetchProducts();
-    }
+    fetchProducts();
   }, [selectedProfile, page, perPage, debouncedValue, sortBy, reverseSortDirection]);
 
   useEffect(() => {
@@ -39,6 +37,10 @@ export const ProductProvider = ({ children }) => {
 
   // Fetch records from the API
   const fetchProducts = async () => {
+    if (!permissions.profile) {
+      console.warn('User does not have permission to fetch products');
+      return;
+    }
     setFetchLoading(true);
     let apiUrl = `${url}?page=${page}&perPage=${perPage}`;
 
@@ -66,6 +68,10 @@ export const ProductProvider = ({ children }) => {
 
   // Add a new record
   const addRecord = async (body) => {
+    if (!permissions.profile) {
+      console.warn('User does not have permission to add products');
+      return;
+    }
     setLoading(true);
 
     try {
@@ -92,6 +98,10 @@ export const ProductProvider = ({ children }) => {
 
   // Update an record
   const updateRecord = async (updatedOrg) => {
+    if (!permissions.profile) {
+      console.warn('User does not have permission to update products');
+      return;
+    }
     setLoading(true);
     try {
       const response = await api(`${url}/${updatedOrg._id}`, {
@@ -115,6 +125,10 @@ export const ProductProvider = ({ children }) => {
 
   // Delete an record
   const deleteRecord = async (_id) => {
+    if (!permissions.profile) {
+      console.warn('User does not have permission to delete products');
+      return;
+    }
     setLoading(true);
     try {
       const response = await api(`${url}/${_id}`, {
@@ -137,6 +151,10 @@ export const ProductProvider = ({ children }) => {
   };
 
   const getRecordById = async (_id) => {
+    if (!permissions.profile) {
+      console.warn('User does not have permission to fetch products');
+      return;
+    }
     try {
       const response = await api(`${url}/${_id}`);
       return response.data.data.product;
@@ -177,7 +195,7 @@ export const ProductProvider = ({ children }) => {
         sortBy,
         setSorting,
         reverseSortDirection,
-        fetchProducts
+        fetchProducts,
       }}
     >
       {children}

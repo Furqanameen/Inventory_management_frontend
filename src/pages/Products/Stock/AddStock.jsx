@@ -14,12 +14,14 @@ import {
   Title,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { useAuth } from '../../../context/Auth/AuthProvider';
 import { useProduct } from '../../../context/Product/provider';
 
 const AddStock = ({ loading, addRecord, getRecordById }) => {
   const [error, setError] = useState(null);
   const productProvider = useProduct();
   const { id } = useParams();
+  const { permissions } = useAuth();
 
   const form = useForm({
     mode: 'uncontrolled',
@@ -31,6 +33,11 @@ const AddStock = ({ loading, addRecord, getRecordById }) => {
   });
 
   const fetchProductStock = async () => {
+    if (!permissions.product) {
+      console.warn('User does not have permission to fetch product stock');
+      return;
+    }
+
     const res = await productProvider.getRecordById(id);
 
     await getRecordById(id);

@@ -26,7 +26,7 @@ export const LocationProvider = ({ children }) => {
 
   const { fetchLocations } = useGlobal();
 
-  const { selectedProfile } = useContext(AuthContext);
+  const { selectedProfile, permissions } = useContext(AuthContext);
   const { fetchStores } = useStore();
 
   // Fetch records on component mount
@@ -45,6 +45,11 @@ export const LocationProvider = ({ children }) => {
 
   // Fetch records from the API
   const fetchRecords = async () => {
+    if (!permissions.locations) {
+      console.warn('User does not have permission to fetch locations');
+      return;
+    }
+
     setFetchLoading(true);
     let apiUrl = `${url}?page=${page}&perPage=${perPage}`;
 
@@ -72,6 +77,10 @@ export const LocationProvider = ({ children }) => {
 
   // Add a new record
   const addRecord = async (body) => {
+    if (!permissions.locations) {
+      console.warn('User does not have permission to add locations');
+      return;
+    }
     setLoading(true);
 
     try {
@@ -99,6 +108,11 @@ export const LocationProvider = ({ children }) => {
 
   // Update an record
   const updateRecord = async (updatedOrg) => {
+    if (!permissions.locations) {
+      console.warn('User does not have permission to update locations');
+      return;
+    }
+
     setLoading(true);
     try {
       const response = await api(`${url}/${updatedOrg._id}`, {
@@ -124,6 +138,10 @@ export const LocationProvider = ({ children }) => {
 
   // Delete an record
   const deleteRecord = async (_id) => {
+    if (!permissions.locations) {
+      console.warn('User does not have permission to delete locations');
+      return;
+    }
     setLoading(true);
     try {
       const response = await api(`${url}/${_id}`, {
@@ -147,6 +165,10 @@ export const LocationProvider = ({ children }) => {
   };
 
   const getRecordById = async (_id) => {
+    if (!permissions.locations) {
+      console.warn('User does not have permission to fetch location by ID');
+      return null;
+    }
     try {
       const response = await api(`${url}/${_id}`);
       return response.data.data.location;

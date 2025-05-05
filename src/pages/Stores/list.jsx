@@ -11,14 +11,16 @@ import {
   TextInput,
   Title,
 } from '@mantine/core';
+import Unauthorized from '../../components/Common/Unauthorized';
 import { Container } from '../../components/Container/Container';
+import { useAuth } from '../../context/Auth/AuthProvider';
 import { useStore } from '../../context/Store/provider';
 import StoresTable from './table';
 import classes from '../../../src/components/Home/HomePage.module.css';
 
 const StoreTable = () => {
-  const { setSearchQuery, loading, page, setPage, perPage, total, fetchLoading } =
-    useStore();
+  const { setSearchQuery, loading, page, setPage, perPage, total, fetchLoading } = useStore();
+  const { permissions } = useAuth();
 
   const navigate = useNavigate();
 
@@ -29,6 +31,10 @@ const StoreTable = () => {
   const handleRedirect = () => {
     return navigate('/store/add');
   };
+
+  if (!permissions.stores) {
+    return <Unauthorized />;
+  }
 
   return (
     <Container py="xl" className={classes.container} size="xl">

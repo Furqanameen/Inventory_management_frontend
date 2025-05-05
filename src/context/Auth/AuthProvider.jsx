@@ -106,6 +106,17 @@ export const AuthProvider = ({ children }) => {
     setAuthHeaders(profileId);
   };
 
+  const isSuperAdmin = user?.admin || selectedProfile?.role === 'superadmin';
+
+  const permissions = {
+    profile: !!selectedProfile,
+    locations: isSuperAdmin,
+    stores: isSuperAdmin,
+    products: !!selectedProfile,
+    users: !!selectedProfile && (selectedProfile?.role === 'admin' || isSuperAdmin),
+    stocks: !!selectedProfile && (selectedProfile?.role === 'admin' || isSuperAdmin),
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -116,6 +127,7 @@ export const AuthProvider = ({ children }) => {
         switchProfile,
         selectedProfile,
         fetchUserData,
+        permissions,
       }}
     >
       {children}

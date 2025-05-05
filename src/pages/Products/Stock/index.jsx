@@ -1,5 +1,7 @@
 import { Box, Card, Grid, Group, LoadingOverlay, Pagination, Title } from '@mantine/core';
+import Unauthorized from '../../../components/Common/Unauthorized';
 import { Container } from '../../../components/Container/Container';
+import { useAuth } from '../../../context/Auth/AuthProvider';
 import { useStock } from '../../../hooks/useStock';
 // import { useProduct } from '../../../context/Product/provider';
 import AddStock from './AddStock';
@@ -21,6 +23,7 @@ const StockTable = () => {
     addRecord,
     getRecordById,
   } = useStock();
+  const { permissions } = useAuth();
 
   //   const navigate = useNavigate();
 
@@ -31,6 +34,10 @@ const StockTable = () => {
   //   const handleRedirect = () => {
   //     return navigate('/product/add');
   //   };
+
+  if (!permissions.stocks) {
+    return <Unauthorized />;
+  }
 
   return (
     <Container py="xl" className={classes.container} size="xl">

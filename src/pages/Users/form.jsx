@@ -13,7 +13,9 @@ import {
   Title,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import Unauthorized from '../../components/Common/Unauthorized';
 import { Container } from '../../components/Container/Container';
+import { useAuth } from '../../context/Auth/AuthProvider';
 import { useUser } from '../../context/User/provider';
 
 const Form = () => {
@@ -23,6 +25,7 @@ const Form = () => {
   const navigate = useNavigate();
 
   const { addRecord, updateRecord, loading, getRecordById } = useUser();
+  const { permissions } = useAuth();
 
   const form = useForm({
     mode: 'uncontrolled',
@@ -35,6 +38,10 @@ const Form = () => {
   });
 
   const fetchRecord = async () => {
+    if (!permissions.users) {
+      console.warn('User does not have permission to fetch users');
+      return;
+    }
     const res = await getRecordById(id);
 
     if (res) {
@@ -86,6 +93,10 @@ const Form = () => {
       // notifications.show({ message: 'Something went wrong!' });
     }
   };
+
+  if (!permissions.users) {
+    return <Unauthorized />;
+  }
 
   return (
     <Container size="xl">

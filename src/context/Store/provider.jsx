@@ -21,7 +21,7 @@ export const StoreProvider = ({ children }) => {
   const [sortBy, setSortBy] = useState(null);
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
   const [debouncedValue] = useDebouncedValue(searchQuery, DEFAULT_DELAY);
-  const { selectedProfile, fetchUserData } = useContext(AuthContext);
+  const { selectedProfile, permissions, fetchUserData } = useContext(AuthContext);
 
   // Fetch records on component mount
   useEffect(() => {
@@ -39,6 +39,11 @@ export const StoreProvider = ({ children }) => {
 
   // Fetch records from the API
   const fetchStores = async () => {
+    if (!permissions.stores) {
+      console.warn('User does not have permission to fetch stores');
+      return;
+    }
+
     setFetchLoading(true);
     let apiUrl = `${url}?page=${page}&perPage=${perPage}`;
 
@@ -66,6 +71,11 @@ export const StoreProvider = ({ children }) => {
 
   // Add a new record
   const addRecord = async (body) => {
+    if (!permissions.stores) {
+      console.warn('User does not have permission to add stores');
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -93,6 +103,10 @@ export const StoreProvider = ({ children }) => {
 
   // Update an record
   const updateRecord = async (updatedOrg) => {
+    if (!permissions.stores) {
+      console.warn('User does not have permission to update stores');
+      return;
+    }
     setLoading(true);
     try {
       const response = await api(`${url}/${updatedOrg._id}`, {
@@ -117,6 +131,10 @@ export const StoreProvider = ({ children }) => {
 
   // Delete an record
   const deleteRecord = async (_id) => {
+    if (!permissions.stores) {
+      console.warn('User does not have permission to delete stores');
+      return;
+    }
     setLoading(true);
     try {
       const response = await api(`${url}/${_id}`, {
@@ -139,6 +157,10 @@ export const StoreProvider = ({ children }) => {
   };
 
   const getRecordById = async (_id) => {
+    if (!permissions.stores) {
+      console.warn('User does not have permission to fetch stores');
+      return;
+    }
     try {
       const response = await api(`${url}/${_id}`);
       return response.data.data.store;

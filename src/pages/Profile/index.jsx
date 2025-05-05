@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Box,
   Card,
@@ -49,6 +50,25 @@ const ProfilePage = () => {
       });
     }
   }, [selectedProfile, locationsOptions, storesOptions]);
+
+  if (!selectedProfile) {
+    return (
+      <Container py="xl" className={classes.container} size="xl">
+        <Card shadow="lg" radius="lg" className={classes.card} padding="xl">
+          <Title fz="xl" fw={600} style={{ fontFamily: 'Lexend, sans-serif' }}>
+            No Profile Selected
+          </Title>
+          <Divider my="md" />
+
+          {/* Make sure Store has been Created add link to navigate to store page  */}
+          <Title fz="xl" fw={600} style={{ fontFamily: 'Lexend, sans-serif' }}>
+            Make sure you have created a store before creating a profile.{' '}
+            <Link to="/store/add">Create Store</Link>
+          </Title>
+        </Card>
+      </Container>
+    );
+  }
 
   return (
     <Container py="xl" className={classes.container} size="xl">

@@ -12,7 +12,9 @@ import {
   Title,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import Unauthorized from '../../components/Common/Unauthorized';
 import { Container } from '../../components/Container/Container';
+import { useAuth } from '../../context/Auth/AuthProvider';
 import { useLocation } from '../../context/Locations/provider';
 
 const Form = () => {
@@ -20,6 +22,7 @@ const Form = () => {
   const { addRecord, updateRecord, loading, getRecordById } = useLocation();
   const navigate = useNavigate();
   const { id } = useParams();
+  const { permissions } = useAuth();
 
   const form = useForm({
     mode: 'uncontrolled',
@@ -29,6 +32,10 @@ const Form = () => {
   });
 
   const fetchRecord = async () => {
+    if (!permissions.locations) {
+      console.warn('User does not have permission to fetch locations');
+      return;
+    }
     const res = await getRecordById(id);
 
     if (res) {
@@ -71,6 +78,10 @@ const Form = () => {
       // notifications.show({ message: 'Something went wrong!' });
     }
   };
+
+  if (!permissions.locations) {
+    return <Unauthorized />;
+  }
 
   return (
     <Container size="xl">
