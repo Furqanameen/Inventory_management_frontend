@@ -26,27 +26,27 @@ const AddStock = ({ loading, addRecord, getRecordById }) => {
   const form = useForm({
     mode: 'uncontrolled',
     initialValues: {
-      quantity: 0,
+      quantity: null,
       stockType: 'IN',
       comment: '',
     },
   });
 
   const fetchProductStock = async () => {
-    if (!permissions.product) {
+    if (!permissions.products) {
       console.warn('User does not have permission to fetch product stock');
       return;
     }
 
-    const res = await productProvider.getRecordById(id);
+    await productProvider.getRecordById(id);
 
     await getRecordById(id);
 
-    if (res) {
-      form.setFieldValue('quantity', res.quantity);
-      form.setFieldValue('stockType', res.stockType);
-      form.setFieldValue('comment', res?.comment || '');
-    }
+    // if (res) {
+    //   form.setFieldValue('quantity', res.quantity);
+    //   form.setFieldValue('stockType', res.stockType);
+    //   form.setFieldValue('comment', res?.comment || '');
+    // }
   };
 
   useEffect(() => {
@@ -61,12 +61,24 @@ const AddStock = ({ loading, addRecord, getRecordById }) => {
       return;
     }
 
+    if (!values.quantity) {
+      setError('Quantity is required');
+      return;
+    }
+
+    if (values.quantity <= 0) {
+      setError('Quantity must be greater than 0');
+      return;
+    }
+
     setError(null);
     try {
       const res = await addRecord({ ...values, productId: id });
 
       if (res.success) {
         // return navigate(`/products/${id}/stock`);
+        form.reset();
+        setError(null);
         await fetchProductStock();
         return;
       }

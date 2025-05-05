@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { IconSearch } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -19,10 +20,14 @@ import StoresTable from './table';
 import classes from '../../../src/components/Home/HomePage.module.css';
 
 const StoreTable = () => {
-  const { setSearchQuery, loading, page, setPage, perPage, total, fetchLoading } = useStore();
+  const { setSearchQuery, loading, page, setPage, perPage, total, fetchLoading, fetchStores } =
+    useStore();
+  const navigate = useNavigate();
   const { permissions } = useAuth();
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    fetchStores();
+  }, []);
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);

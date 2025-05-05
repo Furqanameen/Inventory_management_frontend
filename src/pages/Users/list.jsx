@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { IconSearch } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -19,12 +20,17 @@ import TableComponent from './table';
 import classes from '../../../src/components/Home/HomePage.module.css';
 
 const TableList = () => {
-  const { setSearchQuery, loading, page, setPage, perPage, total, fetchLoading } = useUser();
+  const { setSearchQuery, loading, page, setPage, perPage, total, fetchLoading, fetchRecords } =
+    useUser();
   const { permissions } = useAuth();
   const navigate = useNavigate();
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
+
+  useEffect(() => {
+    fetchRecords();
+  }, []);
 
   const handleRedirect = () => {
     return navigate(`/user/add`);

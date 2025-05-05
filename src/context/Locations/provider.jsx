@@ -209,6 +209,7 @@ export const LocationProvider = ({ children }) => {
         sortBy,
         setSorting,
         reverseSortDirection,
+        fetchRecords
       }}
     >
       {children}

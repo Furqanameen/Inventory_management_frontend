@@ -215,6 +215,7 @@ export const UserProvider = ({ children }) => {
         sortBy,
         setSorting,
         reverseSortDirection,
+        fetchRecords
       }}
     >
       {children}

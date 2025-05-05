@@ -25,7 +25,7 @@ export const ProductProvider = ({ children }) => {
 
   // Fetch records on component mount
   useEffect(() => {
-    fetchProducts();
+    fetchRecords();
   }, [selectedProfile, page, perPage, debouncedValue, sortBy, reverseSortDirection]);
 
   useEffect(() => {
@@ -36,8 +36,8 @@ export const ProductProvider = ({ children }) => {
   }, [searchQuery]);
 
   // Fetch records from the API
-  const fetchProducts = async () => {
-    if (!permissions.profile) {
+  const fetchRecords = async () => {
+    if (!permissions.products) {
       console.warn('User does not have permission to fetch products');
       return;
     }
@@ -68,7 +68,7 @@ export const ProductProvider = ({ children }) => {
 
   // Add a new record
   const addRecord = async (body) => {
-    if (!permissions.profile) {
+    if (!permissions.products) {
       console.warn('User does not have permission to add products');
       return;
     }
@@ -81,7 +81,7 @@ export const ProductProvider = ({ children }) => {
         data: body,
       });
 
-      await fetchProducts();
+      await fetchRecords();
       notifications.show({ message: res.data.message || 'Product added successfully' });
       return res.data;
     } catch ({ response }) {
@@ -98,7 +98,7 @@ export const ProductProvider = ({ children }) => {
 
   // Update an record
   const updateRecord = async (updatedOrg) => {
-    if (!permissions.profile) {
+    if (!permissions.products) {
       console.warn('User does not have permission to update products');
       return;
     }
@@ -108,7 +108,7 @@ export const ProductProvider = ({ children }) => {
         method: 'PUT',
         data: updatedOrg,
       });
-      await fetchProducts();
+      await fetchRecords();
       notifications.show({ message: response.data.message || 'Product updated successfully' });
       return response.data;
     } catch ({ response }) {
@@ -125,7 +125,7 @@ export const ProductProvider = ({ children }) => {
 
   // Delete an record
   const deleteRecord = async (_id) => {
-    if (!permissions.profile) {
+    if (!permissions.products) {
       console.warn('User does not have permission to delete products');
       return;
     }
@@ -136,7 +136,7 @@ export const ProductProvider = ({ children }) => {
       });
 
       notifications.show({ message: response.data.message || 'Product deleted successfully' });
-      await fetchProducts();
+      await fetchRecords();
       return response.data;
     } catch ({ response }) {
       notifications.show({
@@ -151,7 +151,7 @@ export const ProductProvider = ({ children }) => {
   };
 
   const getRecordById = async (_id) => {
-    if (!permissions.profile) {
+    if (!permissions.products) {
       console.warn('User does not have permission to fetch products');
       return;
     }
@@ -195,7 +195,7 @@ export const ProductProvider = ({ children }) => {
         sortBy,
         setSorting,
         reverseSortDirection,
-        fetchProducts,
+        fetchRecords,
       }}
     >
       {children}

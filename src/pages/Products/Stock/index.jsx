@@ -1,4 +1,5 @@
-import { Box, Card, Grid, Group, LoadingOverlay, Pagination, Title } from '@mantine/core';
+import { useNavigate } from 'react-router-dom';
+import { Box, Button, Card, Grid, Group, LoadingOverlay, Pagination, Title } from '@mantine/core';
 import Unauthorized from '../../../components/Common/Unauthorized';
 import { Container } from '../../../components/Container/Container';
 import { useAuth } from '../../../context/Auth/AuthProvider';
@@ -25,15 +26,15 @@ const StockTable = () => {
   } = useStock();
   const { permissions } = useAuth();
 
-  //   const navigate = useNavigate();
+  const navigate = useNavigate();
 
   //   const handleSearchChange = (e) => {
   //     setSearchQuery(e.target.value);
   //   };
 
-  //   const handleRedirect = () => {
-  //     return navigate('/product/add');
-  //   };
+  const handleRedirect = () => {
+    return navigate('/product');
+  };
 
   if (!permissions.stocks) {
     return <Unauthorized />;
@@ -52,8 +53,8 @@ const StockTable = () => {
         />
         <Card shadow="lg" radius="lg" className={classes.card} padding="xl">
           <Grid align="center" justify="space-between">
-            <Grid.Col span={{ base: 12, md: 6 }}>
-              <Group>
+            <Grid.Col span={{ base: 12, md: 12 }}>
+              <Group justify="space-between" align="center" w="100%">
                 <Title
                   fz="xl"
                   fw={600}
@@ -63,7 +64,7 @@ const StockTable = () => {
                 >
                   Stock Management
                 </Title>
-                {/* <Button
+                <Button
                   color="blue"
                   radius="md"
                   size="md"
@@ -71,8 +72,8 @@ const StockTable = () => {
                   style={{ fontFamily: 'Lexend, sans-serif' }}
                   onClick={handleRedirect}
                 >
-                  Add Product
-                </Button> */}
+                  Go to products
+                </Button>
               </Group>
             </Grid.Col>
 
