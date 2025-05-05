@@ -114,7 +114,7 @@ export const AuthProvider = ({ children }) => {
     stores: isSuperAdmin,
     products: !!selectedProfile,
     users: !!selectedProfile && (selectedProfile?.role === 'admin' || isSuperAdmin),
-    stocks: !!selectedProfile && (selectedProfile?.role === 'admin' || isSuperAdmin),
+    stocks: !!selectedProfile,
   };
 
   return (
