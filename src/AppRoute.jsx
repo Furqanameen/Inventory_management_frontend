@@ -4,6 +4,7 @@ import LocationsForm from './pages/Locations/form';
 import LocationsList from './pages/Locations/list';
 import ProductForm from './pages/Products/form';
 import ProductList from './pages/Products/list';
+import StockList from './pages/Products/Stock';
 import StoreForm from './pages/Stores/form';
 import StoreList from './pages/Stores/list';
 import UserForm from './pages/Users/form';
@@ -35,6 +36,7 @@ const AppRoutes = () => {
       <Route path="/product" element={<ProductList />} />
       <Route path="/product/add" element={<ProductForm />} />
       <Route path="/product/:id" element={<ProductForm />} />
+      <Route path="/product/:id/stock" element={<StockList />} />
 
       <Route path="/user" element={<UserList />} />
       <Route path="/user/add" element={<UserForm />} />

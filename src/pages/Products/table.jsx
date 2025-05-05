@@ -98,7 +98,7 @@ const ProductsTable = () => {
             </Text>
           </Table.Td>
 
-          <Table.Td width={'10%'}>
+          <Table.Td width={'8%'}>
             <Text size="sm" ta="center">
               {item?.salePrice ?? 'N/A'}
             </Text>
@@ -123,10 +123,21 @@ const ProductsTable = () => {
               )}
             </Text>
           </Table.Td>
-          <Table.Td width="20%">
+          <Table.Td width="22%">
             <Group gap="sm" ta="end" justify="end">
               <Button
                 size="sm"
+                variant="filled"
+                px="xs"
+                color="dark"
+                onClick={() => navigate(`/product/${item._id}/stock`)}
+                disabled={loading}
+              >
+                Stock
+              </Button>
+              <Button
+                size="sm"
+                px="xs"
                 variant="filled"
                 onClick={() => navigate(`/product/${item._id}`)}
                 disabled={loading}
@@ -135,6 +146,7 @@ const ProductsTable = () => {
               </Button>
               <Button
                 size="sm"
+                px="xs"
                 variant="filled"
                 color="red"
                 onClick={() => openDeleteModal(item)}
